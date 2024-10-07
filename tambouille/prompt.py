@@ -1,31 +1,4 @@
 from pydantic import BaseModel
-# text = f"""You are an AI assistant specialized in document retrieval tasks. Given an image of a document page, your task is to generate retrieval queries that someone might use to find this document in a large corpus.
-#     Your task is to create retrieval queries in {language} for this document content at different levels of complexity and ambiguity.\n"""
-
-#     text2 = """Please generate 3 retrieval queries based on the content of the document:
-
-#     1. A simple, straightforward query
-#     2. A complex query requiring understanding of multiple aspects of the document
-#     3. An ambiguous query that could retrieve this document among others
-
-#     For each query, provide a brief explanation of its complexity level or ambiguity and why it would be effective or challenging for retrieval.
-
-#     Format your response as a JSON object with the following structure:
-
-#     {
-#     "simple_query": "Your query here",
-#     "simple_query_answer": "Answer to the simple query",
-#     "simple_explanation": "Brief explanation",
-#     "complex_query": "Your query here",
-#     "complex_query_answer": "Answer to the complex query",
-#     "complex_explanation": "Brief explanation",
-#     "ambiguous_query": "Your query here",
-#     "ambiguous_query_answer": "Answer to the ambiguous query",
-#     "ambiguous_explanation": "Brief explanation"
-#     }
-
-#     Generate the queries based on this image and provide the response in the specified JSON format."""
-
 
 class Prompt:
     def __init__(self, prompt: str, model: BaseModel):
@@ -69,3 +42,34 @@ class QuestionAnswer(BaseModel):
     ambiguous_query: str
     ambiguous_query_answer: str
     ambiguous_explanation: str
+
+BASE_PROMT = """You are an assistant specialized in Multimodal RAG tasks.
+
+The task is the following: given an image from a pdf page, you will have to generate questions that can be asked by a user to retrieve information from a large documentary corpus.
+
+The question should be relevant to the page, and should not be too specific or too general. The question should be about the subject of the page, and the answer needs to be found in the page.
+
+Remember that the question is asked by a user to get some information from a large documentary corpus that contains multimodal data. Generate a question that could be asked by a user without knowing the existence and the content of the corpus.
+
+Generate as well the answer to the question, which should be found in the page. And the format of the answer should be a list of words answering the question.
+
+Generate at most ONE pair of query and answer per page in a dictionary with the following format, answer ONLY this dictionary NOTHING ELSE:
+
+
+{
+    "question": "XXXXXX",
+    "answer": "YYYYYY"
+}
+
+
+where XXXXXX is the question and 'YYYYYY' is the corresponding  answer that could be as long as needed.
+
+Note: If there are no questions to ask about the page, return an empty list. Focus on making relevant questions concerning the page.
+
+Here is the page:"""
+
+class BaseQuery(BaseModel):
+    question: str
+    answer: str
+
+base_prompt = Prompt(BASE_PROMT, BaseQuery)

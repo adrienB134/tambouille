@@ -1,17 +1,20 @@
+import os
+
 import outlines
 from outlines.models import transformers_vision
 
 from transformers import Qwen2VLForConditionalGeneration
 from .utils import tear_down_torch
 
-# from qwen_vl_utils import process_vision_info
 from tqdm import tqdm
 from typing import Union
 
 from datasets import load_dataset, Dataset, DatasetDict
 
 from qwen_vl_utils import process_vision_info
-from .prompt import Prompt
+
+from .prompt import Prompt, base_prompt
+from .preprocess import encode_image
 
 from pathlib import Path
 from typing import cast
@@ -22,7 +25,8 @@ from colpali_engine.loss import ColbertPairwiseCELoss
 from colpali_engine.models import ColPali, ColPaliProcessor, ColQwen2, ColQwen2Processor
 from colpali_engine.trainer.contrastive_trainer import ContrastiveTrainer
 from colpali_engine.utils.torch_utils import get_torch_device
-from datasets import DatasetDict, load_dataset
+
+from datasets import DatasetDict, load_dataset, Dataset
 from transformers import BitsAndBytesConfig, TrainerCallback, TrainingArguments
 from typing import Union, Literal
 from .utils import (
@@ -68,12 +72,26 @@ class Tambouille:
             self.model = ColPali
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
+        
+    def prepare_data(path_to_data: Union[str, Path]) -> Dataset:
+        """
+        Prepare a dataset from files located in the specified path.
+
+        Args:
+            path_to_data (Union[str, Path]): The path to the directory containing image files.
+
+        Returns:
+            Dataset: A HuggingFace Dataset object containing encoded images.
+        """
+        images = os.listdir(path_to_data)
+        images = encode_image(images)
+        return Dataset.from_dict({"image": images})
 
     def generate_dataset(
         self,
         qwen_vl_model: str,
-        prompt: Prompt,
         dataset: Union[Dataset, str],
+        prompt: Prompt = base_prompt,
         img_column_name: str = "image",
         test_size: float = 0.1,
         max_pixels: int = 1280 * 28 * 28,

@@ -7,7 +7,7 @@ from pdf2image import convert_from_path
 
 def encode_image(
     input_data: Union[str, Image.Image, List[Union[str, Image.Image]]],
-) -> None:
+) -> List:
     if not isinstance(input_data, list):
         input_data = [input_data]
 
@@ -39,3 +39,5 @@ def encode_image(
                 raise ValueError(f"Unsupported file type: {item}")
         else:
             raise ValueError(f"Unsupported input type: {type(item)}")
+        
+        return images
