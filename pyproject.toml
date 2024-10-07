@@ -16,8 +16,9 @@ dependencies = [
     "bitsandbytes>=0.44",
     "wandb>=0.18.1",
     "qwen-vl-utils>=0.0.8",
-    "outlines",
+    "outlines>=0.1.0",
+    "torch",
 ]
 
-[tool.uv.sources]
-outlines = { git = "https://github.com/dottxt-ai/outlines.git", rev = "main" }
+
+
