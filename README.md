@@ -4,6 +4,25 @@
 
 Tambouille is a Python-based tool designed for managing and training visual retrieval models. It is built to work with ColQwen2 and ColPali models, facilitating both dataset generation and training processes for visual tasks.
 
+## Pre-requisites
+
+Before using Tambouille, ensure you have the following prerequisites installed on your system:
+#### Poppler
+
+To convert pdf to images with a friendly license, we use the `pdf2image` library. This library requires `poppler` to be installed on your system. Poppler is very easy to install by following the instructions [on their website](https://poppler.freedesktop.org/). The tl;dr is:
+
+__MacOS with homebrew__
+
+```bash
+brew install poppler
+```
+
+__Debian/Ubuntu__
+
+```bash
+sudo apt-get install -y poppler-utils
+```
+
 ## Installation
 
 Ensure you have Python 3.10 or higher installed on your system.
