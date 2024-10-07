@@ -1,0 +1,23 @@
+[project]
+name = "tambouille"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "accelerate>=0.34.2",
+    "pdf2image>=1.17.0",
+    "pillow>=10.4.0",
+    "ruff>=0.6.8",
+    "torchvision>=0.19.0",
+    "tqdm>=4.66.5",
+    "datasets>=3.0.0",
+    "colpali-engine>=0.3.1",
+    "bitsandbytes>=0.44",
+    "wandb>=0.18.1",
+    "qwen-vl-utils>=0.0.8",
+    "outlines",
+]
+
+[tool.uv.sources]
+outlines = { git = "https://github.com/dottxt-ai/outlines.git", rev = "main" }
