@@ -62,17 +62,31 @@ data = tambouille.prepare_data(path_to_data="path/to/data")
 
 ### Generating Dataset from your data
 
+You can generate a dataset using your own prompt and data structure by creating a `Prompt` object and passing it to the `generate_dataset` method. Can be useful to get queries more relevant to the domain or if your document is in a language other than english.
+
+Here's an example:
 ```python
 from tambouille.tambouille import Prompt
+from pydantic import BaseModel
 
-prompt = Prompt(prompt="your textual query", model=QuestionAnswer)
+class QueryAnswer(BaseModel):
+    query: str
+    answer: str
+
+prompt = """"Generate a query and an answer relevant to the image"""
+
+prompt = Prompt(prompt=prompt, model=QueryAnswer)
 dataset = tambouille.generate_dataset(
     qwen_vl_model="qwen-vl-model-path",
     prompt=prompt,
-    dataset="path/to/dataset",
+    dataset=data,
     img_column_name="image"
 )
 ```
+
+Here `dataset` is a Huggging Face Dataset object. I would strongly suggest that you look at several examples of the dataset to make sure that the queries are relevant to the image. If not, you can modify the prompt or the data structure to get better results.
+
+Have a look at the `prompt.py` file to see the default prompt and data structure.
 
 ### Training the Model
 
@@ -91,7 +105,7 @@ training_args = TrainingArguments(
 )
 
 # Specify optional parameters for logging, saving, and using WandB
-model.train(
+tambouille.train(
     dataset="your_dataset",
     query_column_name="query",
     image_column_name="image",
