@@ -9,7 +9,7 @@ Tambouille is a Python-based tool designed for managing and training visual retr
 Before using Tambouille, ensure you have the following prerequisites installed on your system:
 #### Poppler
 
-To convert pdf to images with a friendly license, we use the `pdf2image` library. This library requires `poppler` to be installed on your system. Poppler is very easy to install by following the instructions [on their website](https://poppler.freedesktop.org/). The tl;dr is:
+To convert pdf to images we use the `pdf2image` library. This library requires `poppler` to be installed on your system. You can follow the instructions [on their website](https://poppler.freedesktop.org/). Or use the following:
 
 __MacOS with homebrew__
 
